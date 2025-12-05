@@ -4,11 +4,31 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 5.0"
     }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 5.0"
+    }
   }
 }
 
+variable "project_id" {
+  description = "The GCP project ID."
+  default     = "balloon-87473"
+}
+
+variable "region" {
+  description = "The GCP region to deploy resources to."
+  default     = "us-central1"
+}
+
 provider "google" {
-  project = "balloon-87473"
+  project = var.project_id
+  region  = var.region
+}
+
+provider "google-beta" {
+  project = var.project_id
+  region  = var.region
 }
 
 resource "google_project_service" "project_services" {
@@ -24,7 +44,7 @@ resource "google_project_service" "project_services" {
     "youtube.googleapis.com"          # YouTube Data API
   ])
 
-  project                    = "balloon-87473"
+  project                    = var.project_id
   service                    = each.key
   disable_dependent_services = false # Keep this false to avoid accidentally disabling core services
 }

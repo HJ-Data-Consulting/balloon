@@ -1,0 +1,12 @@
+# Node.js
+node_modules/
+.env
+
+# Next.js
+.next/
+
+# Build artifacts
+dist/
+
+# Monorepo node_modules
+packages/*/node_modules/
