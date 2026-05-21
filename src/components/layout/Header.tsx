@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getPageViewCount } from '../../services/analytics';
 
 type HeaderProps = {
     viewMode: string;
@@ -8,7 +9,14 @@ type HeaderProps = {
 
 export const Header = ({ viewMode, setViewMode, onBack }: HeaderProps) => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [pageViews, setPageViews] = useState<number | null>(null);
     const close = () => setMenuOpen(false);
+
+    useEffect(() => {
+        if (viewMode === 'admin') {
+            getPageViewCount().then(setPageViews);
+        }
+    }, [viewMode]);
 
     return (
         <header className="header">
@@ -19,6 +27,11 @@ export const Header = ({ viewMode, setViewMode, onBack }: HeaderProps) => {
                     </button>
                 )}
                 <h1>Pop the Balloon Analytics</h1>
+                {viewMode === 'admin' && pageViews !== null && (
+                    <span style={{ fontSize: '0.75rem', opacity: 0.6, marginLeft: '0.75rem' }}>
+                        {pageViews.toLocaleString()} views
+                    </span>
+                )}
                 <button
                     className={`burger-btn${menuOpen ? ' burger-btn--open' : ''}`}
                     onClick={() => setMenuOpen(o => !o)}

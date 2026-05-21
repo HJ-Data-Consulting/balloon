@@ -24,6 +24,7 @@ import { IndustriesChart } from './components/dashboard/IndustriesChart';
 import { DealbreakersChart } from './components/dashboard/DealbreakersChart';
 import { DramaScoreChart } from './components/dashboard/DramaScoreChart';
 import { AgeMatchChart } from './components/dashboard/AgeMatchChart';
+import { trackPageView } from './services/analytics';
 import './styles/index.css';
 
 // --- Main App Logic (Controller) ---
@@ -66,6 +67,8 @@ const App = () => {
     const [dealbreakersData, setDealbreakersData] = useState<any[]>([]);
     const [dramaData, setDramaData] = useState<any[]>([]);
     const [ageMatchData, setAgeMatchData] = useState<any[]>([]);
+
+    useEffect(() => { trackPageView(); }, []);
 
     // Auth Listener
     useEffect(() => {
