@@ -25,6 +25,7 @@ import { DealbreakersChart } from './components/dashboard/DealbreakersChart';
 import { DramaScoreChart } from './components/dashboard/DramaScoreChart';
 import { AgeMatchChart } from './components/dashboard/AgeMatchChart';
 import { trackPageView } from './services/analytics';
+import { VoiceDatabaseSearch } from './components/search/VoiceDatabaseSearch';
 import './styles/index.css';
 
 // --- Main App Logic (Controller) ---
@@ -262,6 +263,8 @@ const App = () => {
             <Header viewMode={viewMode} setViewMode={setViewMode} onBack={() => setShowLanding(true)} />
 
             <main>
+                <VoiceDatabaseSearch />
+
                 {viewMode === 'admin' && (
                     <>
                         {!user ? (

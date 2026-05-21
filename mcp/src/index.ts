@@ -10,6 +10,16 @@ async function apiFetch(path: string): Promise<unknown> {
     return res.json();
 }
 
+async function apiPost(path: string, body: unknown): Promise<unknown> {
+    const res = await fetch(`${API_BASE}${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`API error ${res.status} for ${path}`);
+    return res.json();
+}
+
 const server = new McpServer({
     name: "balloon-mcp",
     version: "1.0.0",
@@ -133,6 +143,16 @@ server.tool(
     {},
     async () => {
         const data = await apiFetch("/api/stats/age-match");
+        return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
+    }
+);
+
+server.tool(
+    "ask_database",
+    "Ask a natural-language question about the Pop the Balloon database and get a concise natural-language answer",
+    { query: z.string().min(1).describe("Question to ask, e.g. 'Which episodes had the highest match rate?'") },
+    async ({ query }) => {
+        const data = await apiPost("/api/search", { query });
         return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
     }
 );
